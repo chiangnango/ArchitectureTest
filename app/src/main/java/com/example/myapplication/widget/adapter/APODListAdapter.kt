@@ -37,7 +37,11 @@ class APODListAdapter(context: Context) : RecyclerView.Adapter<APODListAdapter.V
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val apod = data[position]
 
-        ImageUtil.load(apod.imageUrl, holder.thumbnail)
+        ImageUtil.loadRoundedImage(
+            apod.imageUrl, holder.thumbnail,
+            holder.itemView.resources.getDimension(R.dimen.common_radius).toInt(),
+            android.R.color.darker_gray
+        )
         holder.title.text = apod.title
     }
 

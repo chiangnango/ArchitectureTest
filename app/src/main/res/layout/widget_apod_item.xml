@@ -14,7 +14,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tool:src="@color/colorPrimary" />
+        tool:src="@color/colorPrimary"
+        tool:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/title"
@@ -25,6 +26,7 @@
         android:layout_marginBottom="@dimen/common_margin"
         android:ellipsize="end"
         android:maxLines="2"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@id/thumbnail"
         app:layout_constraintEnd_toEndOf="@id/thumbnail"
         app:layout_constraintStart_toStartOf="@id/thumbnail"

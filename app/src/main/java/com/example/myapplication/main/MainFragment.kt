@@ -10,18 +10,19 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.example.myapplication.MainActivity
 import com.example.myapplication.Navigator
 import com.example.myapplication.R
 import com.example.myapplication.architecture.InjectorUtil
-import com.example.myapplication.widget.adapter.APODListAdapter
+import com.example.myapplication.data.APOD
+import com.example.myapplication.widget.adapter.HomePageAdapter
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var adapter: APODListAdapter
+    private lateinit var adapter: HomePageAdapter
     private lateinit var navigator: Navigator
 
     override fun onCreateView(
@@ -43,11 +44,22 @@ class MainFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProviders.of(activity!!, InjectorUtil.provideMainViewModelFactory(navigator))
-            .get(MainViewModel::class.java)
+        viewModel =
+            ViewModelProviders.of(activity!!, InjectorUtil.provideMainViewModelFactory(navigator))
+                .get(MainViewModel::class.java)
 
         viewModel.apodList.observe(viewLifecycleOwner, Observer {
-            adapter.data = it
+
+            fun mockData(realData: List<APOD>): List<List<APOD>> {
+                val result = ArrayList<List<APOD>>()
+                repeat(20) {
+                    val row = realData.subList(it, realData.size) + realData.subList(0, it)
+                    result.add(row)
+                }
+                return result
+            }
+
+            adapter.data = mockData(it)
             adapter.notifyDataSetChanged()
         })
 
@@ -61,15 +73,15 @@ class MainFragment : Fragment() {
     }
 
     private fun initView() {
-        horizontal_list.layoutManager = LinearLayoutManager(context).apply {
-            orientation = HORIZONTAL
+        homepage_view.layoutManager = LinearLayoutManager(context).apply {
+            orientation = VERTICAL
         }
 
-        adapter = APODListAdapter(activity!!).apply {
+        adapter = HomePageAdapter(activity!!).apply {
             clickListener = {
                 viewModel.onAPODItemClicked(it)
             }
         }
-        horizontal_list.adapter = adapter
+        homepage_view.adapter = adapter
     }
 }

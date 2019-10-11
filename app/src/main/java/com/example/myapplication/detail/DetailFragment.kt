@@ -66,7 +66,11 @@ class DetailFragment : Fragment() {
     }
 
     private fun render(apod: APOD) {
-        ImageUtil.load(apod.imageUrl, cover)
+        ImageUtil.loadRoundedImage(
+            apod.imageUrl, cover,
+            cover.context.resources.getDimension(R.dimen.common_radius).toInt(),
+            android.R.color.darker_gray
+        )
         title.text = apod.title
         explanation.text = apod.explanation
     }
