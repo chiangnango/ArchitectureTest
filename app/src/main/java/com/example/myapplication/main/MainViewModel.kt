@@ -15,10 +15,12 @@ class MainViewModel(private val repository: MainRepository,
         private val TAG = MainViewModel::class.java.simpleName
     }
 
-    val apodList = repository.apodList
+    private val _apodList = MutableLiveData<List<APOD>>()
+    val apodList: LiveData<List<APOD>> = _apodList
     private val apodListObserver = Observer<List<APOD>> {
         Log.d(TAG, "APODList onChanged() $it")
 
+        _apodList.value = pruneUnknownImage(it)
         _showSpinner.value = false
     }
 
@@ -55,5 +57,11 @@ class MainViewModel(private val repository: MainRepository,
         super.onCleared()
 
         repository.apodList.removeObserver(apodListObserver)
+    }
+
+    private fun pruneUnknownImage(list: List<APOD>): List<APOD> {
+        return list.filter {
+            it.imageUrl.endsWith(".jpg")
+        }
     }
 }
