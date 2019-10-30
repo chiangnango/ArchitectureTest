@@ -2,7 +2,7 @@ package com.example.myapplication.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.myapplication.Navigator
-import com.example.myapplication.api.FetchAPODAPI.Companion.parseAPODList
+import com.example.myapplication.api.FetchAPODAPICallback.Companion.parseAPODList
 import com.example.myapplication.observeForTesting
 import com.google.common.truth.Truth.assertThat
 import io.mockk.MockKAnnotations

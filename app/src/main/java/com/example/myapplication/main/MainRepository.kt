@@ -3,13 +3,13 @@ package com.example.myapplication.main
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.myapplication.api.FetchAPODAPI
+import com.example.myapplication.api.FetchAPODAPICallback
 import com.example.myapplication.data.APOD
-import com.example.myapplication.util.API
+import com.example.myapplication.util.APICallback
 
 class MainRepository {
 
-    private var api: FetchAPODAPI? = null
+    private var api: FetchAPODAPICallback? = null
 
     @VisibleForTesting
     val _apodList = MutableLiveData<List<APOD>>()
@@ -17,8 +17,8 @@ class MainRepository {
 
     fun fetchAPODList() {
         cancelFetchAPOD()
-        api = FetchAPODAPI().apply {
-            apiCallback = object : API.APICallback<List<APOD>> {
+        api = FetchAPODAPICallback().apply {
+            callback = object : APICallback.Callback<List<APOD>> {
                 override fun onError(e: Exception) {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
