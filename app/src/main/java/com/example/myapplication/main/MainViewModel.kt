@@ -1,15 +1,15 @@
 package com.example.myapplication.main
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.example.myapplication.Navigator
 import com.example.myapplication.data.APOD
+import kotlinx.coroutines.launch
 
-class MainViewModel(private val repository: MainRepository,
-                    private val navigator: Navigator) : ViewModel() {
+class MainViewModel(
+    private val repository: MainRepository,
+    private val navigator: Navigator
+) : ViewModel() {
 
     companion object {
         private val TAG = MainViewModel::class.java.simpleName
@@ -17,10 +17,13 @@ class MainViewModel(private val repository: MainRepository,
 
     private val _apodList = MutableLiveData<List<APOD>>()
     val apodList: LiveData<List<APOD>> = _apodList
-    private val apodListObserver = Observer<List<APOD>> {
+    private val apodListObserver = Observer<Result<List<APOD>>> {
         Log.d(TAG, "APODList onChanged() $it")
 
-        _apodList.value = pruneUnknownImage(it)
+        when {
+            it.isSuccess -> _apodList.value = pruneUnknownImage(it.getOrDefault(emptyList()))
+            it.isFailure -> Log.d(TAG, "fetch APODList fail: ${it.exceptionOrNull()}")
+        }
         _showSpinner.value = false
     }
 
@@ -49,7 +52,9 @@ class MainViewModel(private val repository: MainRepository,
     }
 
     private fun fetchAPODListFromRepository() {
-        repository.fetchAPODList()
+        viewModelScope.launch {
+            repository.fetchAPODList()
+        }
         _showSpinner.value = true
     }
 

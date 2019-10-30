@@ -51,7 +51,7 @@ abstract class APICallback<T> : API<T> {
             } else {
                 Log.d(TAG, "${this@APICallback.javaClass.simpleName} failure: $responseStr")
                 uiHandler.post {
-                    callback?.onFailure(response.code, responseStr)
+                    callback?.onFailure(response.code, response.message, responseStr)
                 }
             }
         }
@@ -71,7 +71,7 @@ abstract class APICallback<T> : API<T> {
 
     interface Callback<T> {
         fun onError(e: Exception)
-        fun onFailure(httpStatusCode: Int, response: String)
+        fun onFailure(httpStatusCode: Int, message: String, response: String)
         fun onResponse(result: T)
     }
 }

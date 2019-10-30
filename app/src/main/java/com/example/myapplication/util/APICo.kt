@@ -25,14 +25,15 @@ abstract class APICo<T> : API<T> {
         val call = okHttpClient.newCall(request)
 
         return suspendCancellableCoroutine { continuation ->
+            Log.d(TAG, "start ${this@APICo.javaClass.simpleName} $url")
             call.enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    if (continuation.isCancelled) return
-
                     Log.d(
                         TAG,
                         "${this@APICo.javaClass.simpleName} onFailure: ${Log.getStackTraceString(e)}"
                     )
+                    if (continuation.isCancelled) return
+
                     continuation.resumeWithException(e)
                 }
 
@@ -71,6 +72,7 @@ abstract class APICo<T> : API<T> {
 
     private fun Call.registerOnCompletion(continuation: CancellableContinuation<*>) {
         continuation.invokeOnCancellation {
+            Log.d(TAG, "${this@APICo.javaClass.simpleName} onCancellation")
             cancel()
         }
     }
