@@ -1,5 +1,6 @@
 package com.example.myapplication.main
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.myapplication.api.FetchAPODAPI
@@ -10,7 +11,8 @@ class MainRepository {
 
     private var api: FetchAPODAPI? = null
 
-    private val _apodList = MutableLiveData<List<APOD>>()
+    @VisibleForTesting
+    val _apodList = MutableLiveData<List<APOD>>()
     val apodList: LiveData<List<APOD>> = _apodList
 
     fun fetchAPODList() {

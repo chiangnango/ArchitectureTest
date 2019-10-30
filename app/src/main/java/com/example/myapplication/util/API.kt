@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.annotation.WorkerThread
 import okhttp3.*
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 abstract class API<Result> {
     companion object {
@@ -13,7 +14,11 @@ abstract class API<Result> {
 
         const val URL = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
 
-        val okHttpClient = OkHttpClient.Builder().build()
+        val okHttpClient = OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
+            .build()
     }
 
     lateinit var url: String
