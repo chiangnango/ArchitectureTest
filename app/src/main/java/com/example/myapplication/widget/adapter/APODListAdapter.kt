@@ -40,7 +40,7 @@ class APODListAdapter(context: Context) : RecyclerView.Adapter<APODListAdapter.V
         ImageUtil.loadRoundedImage(
             apod.imageUrl, holder.thumbnail,
             holder.itemView.resources.getDimension(R.dimen.common_radius).toInt(),
-            android.R.color.darker_gray
+            android.R.color.black
         )
         holder.title.text = apod.title
     }
