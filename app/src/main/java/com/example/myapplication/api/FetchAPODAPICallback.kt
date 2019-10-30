@@ -1,13 +1,13 @@
 package com.example.myapplication.api
 
 import com.example.myapplication.data.APOD
-import com.example.myapplication.util.APICo
+import com.example.myapplication.util.APICallback
 import com.example.myapplication.util.APIUtil.URL
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 
-class FetchAPODAPI : APICo<List<APOD>>() {
+class FetchAPODAPICallback : APICallback<List<APOD>>() {
 
     companion object {
         @Throws(JsonSyntaxException::class)
