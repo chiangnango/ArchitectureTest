@@ -1,12 +1,10 @@
 package com.example.myapplication.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.example.myapplication.Navigator
 import com.example.myapplication.api.FetchAPODAPICallback.Companion.parseAPODList
 import com.example.myapplication.observeForTesting
 import com.google.common.truth.Truth.assertThat
 import io.mockk.MockKAnnotations
-import io.mockk.impl.annotations.MockK
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -15,10 +13,7 @@ class MainViewModelTest {
 
     private lateinit var viewModel: MainViewModel
 
-    private lateinit var repository: MainRepository
-
-    @MockK
-    private lateinit var navigator: Navigator
+    private lateinit var repository: MainCoRepository
 
     /**
      * For LiveData won't encounter Method getMainLooper in android.os.Looper not mocked.
@@ -30,8 +25,8 @@ class MainViewModelTest {
     @Before
     fun setup() {
         MockKAnnotations.init(this, relaxed = true)
-        repository = MainRepository()
-        viewModel = MainViewModel(repository, navigator)
+        repository = MainCoRepository()
+        viewModel = MainViewModel(repository)
     }
 
     @Test
@@ -41,7 +36,7 @@ class MainViewModelTest {
         assertThat(list).hasSize(2)
         assertThat(list[1].imageUrl.endsWith(".jpg")).isFalse()
 
-        repository._apodList.value = list
+        repository._apodList.value = Result.success(list)
 
         viewModel.apodList.observeForTesting {
             assertThat(viewModel.apodList.value).hasSize(1)
