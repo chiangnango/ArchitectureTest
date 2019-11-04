@@ -1,24 +1,20 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.myapplication.main.MainFragment
-
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-    lateinit var navigator: Navigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        navigator = Navigator()
         observeNavigator()
 
         fab.setOnClickListener { view ->
@@ -32,7 +28,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeNavigator() {
-        navigator.navigateFragment.observe(this, Observer {
+        Navigator.navigateFragment.observe(this, Observer {
+            it ?: return@Observer
+
             supportFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragment_container, it).commit()
         })
     }

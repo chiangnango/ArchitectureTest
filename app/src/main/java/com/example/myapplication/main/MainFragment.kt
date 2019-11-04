@@ -11,8 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
-import com.example.myapplication.MainActivity
-import com.example.myapplication.Navigator
 import com.example.myapplication.R
 import com.example.myapplication.architecture.InjectorUtil
 import com.example.myapplication.data.APOD
@@ -23,7 +21,6 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: HomePageAdapter
-    private lateinit var navigator: Navigator
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +33,6 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        navigator = (context as MainActivity).navigator
         initViewModel()
         viewModel.fetchAPODList()
 
@@ -44,9 +40,8 @@ class MainFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel =
-            ViewModelProviders.of(activity!!, InjectorUtil.provideMainViewModelFactory(navigator))
-                .get(MainViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!, InjectorUtil.provideMainViewModelFactory())
+            .get(MainViewModel::class.java)
 
         viewModel.apodList.observe(viewLifecycleOwner, Observer {
 

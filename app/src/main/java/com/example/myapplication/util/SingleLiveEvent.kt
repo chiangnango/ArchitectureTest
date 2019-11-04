@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 
-class SingleLiveEvent<T> : MediatorLiveData<T>() {
+open class SingleLiveEvent<T> : MediatorLiveData<T>() {
 
     private val observers = ArraySet<SingleLiveEventObserverWrapper<T>>()
 
