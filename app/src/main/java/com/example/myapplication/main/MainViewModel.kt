@@ -6,10 +6,7 @@ import com.example.myapplication.Navigator
 import com.example.myapplication.data.APOD
 import kotlinx.coroutines.launch
 
-class MainViewModel(
-    private val repository: MainRepository,
-    private val navigator: Navigator
-) : ViewModel() {
+class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
     companion object {
         private val TAG = MainViewModel::class.java.simpleName
@@ -41,7 +38,7 @@ class MainViewModel(
     }
 
     fun onAPODItemClicked(apod: APOD) {
-        navigator.startAPODDetail(apod)
+        Navigator.startAPODDetail(apod)
     }
 
     fun fetchAPOD(selectedDate: String) {

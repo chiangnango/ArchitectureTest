@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.myapplication.MainActivity
-import com.example.myapplication.Navigator
 import com.example.myapplication.R
 import com.example.myapplication.architecture.InjectorUtil
 import com.example.myapplication.data.APOD
@@ -31,7 +29,6 @@ class DetailFragment : Fragment() {
 
     private var selectedDate: String = ""
     private lateinit var viewModel: MainViewModel
-    private lateinit var navigator: Navigator
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,14 +45,13 @@ class DetailFragment : Fragment() {
             selectedDate = it.getString(KEY_APOD_DATE) ?: return
         }
 
-        navigator = (context as MainActivity).navigator
         initViewModel()
         viewModel.fetchAPOD(selectedDate)
     }
 
     private fun initViewModel() {
         viewModel =
-            ViewModelProviders.of(activity!!, InjectorUtil.provideMainViewModelFactory(navigator))
+            ViewModelProviders.of(activity!!, InjectorUtil.provideMainViewModelFactory())
                 .get(MainViewModel::class.java)
 
         viewModel.apodList.observe(viewLifecycleOwner, Observer { list ->
